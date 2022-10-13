@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF8"?>
+<toolchains>
+
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <version>17.0.4</version>
+      <vendor>Adoptium</vendor>
+      <id>ide</id>
+    </provides>
+    <configuration>
+      <jdkHome>C:\Program Files\Adoptium\jdk-17.0.4+1</jdkHome>
+    </configuration>
+  </toolchain>
+  
+</toolchains>
+
+
+

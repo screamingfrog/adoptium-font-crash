@@ -1,0 +1,35 @@
+name: Windows Oracle
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+
+      - name: 'Install Oracle JDK 17.0.4'
+        uses: oracle-actions/setup-java@v1
+        with:
+          website: oracle.com
+          release: 17
+          version: 17.0.4
+
+      - uses: actions/checkout@v1
+
+      - name: Maven Settings
+        run: |
+          cp adoptium-font-crash/src/setup/windows/toolchain.xml $HOME/.m2/toolchains.xml
+          (Get-Content ~/.m2/toolchains.xml) -replace"<jdkHome>.*</jdkHome>", ("<jdkHome>"+[Environment]::GetEnvironmentVariable('JAVA_HOME')+"</jdkHome>") | Set-Content ~/.m2/toolchains.xml
+
+      - name: Build with Maven
+        run: cd adoptium-font-crash/ && mvn --batch-mode package 
+
+      - name: Archive 
+        uses: actions/upload-artifact@v3
+        with:
+          name: oracle
+          path: adoptium-font-crash/target/adoptium-font-crash-1.0-SNAPSHOT-distribution.zip
+          retention-days: 2
