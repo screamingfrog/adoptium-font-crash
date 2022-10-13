@@ -7,12 +7,120 @@
   <version>1.0-SNAPSHOT</version>
   <name>adoptium-font-crash</name>
   <url>http://maven.apache.org</url>
+
+    <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jdk.version>17.0.2</jdk.version>
+    <jdk.vendor>Adoptium</jdk.vendor>
+    <javafx.version>17.0.2</javafx.version>
+    <junit.version>5.8.2</junit.version>
+  </properties>
+
   <dependencies>
+    
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    
   </dependencies>
+  
+  <build>
+
+    <plugins>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-toolchains-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>toolchain</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <toolchains>
+            <jdk>
+              <version>${jdk.version}</version>
+              <vendor>${jdk.vendor}</vendor>
+            </jdk>
+          </toolchains>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>17</source>
+          <target>17</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <archive>
+            <addMavenDescriptor>false</addMavenDescriptor>
+            <index>false</index>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>lib/</classpathPrefix>
+            </manifest>
+            <manifestEntries>
+              <Main-Class>com.github.screamingfrog.App</Main-Class>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <includeScope>runtime</includeScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
 </project>
