@@ -10,7 +10,7 @@
 
     <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jdk.version>17.0.2</jdk.version>
+    <jdk.version>17.0.4</jdk.version>
     <jdk.vendor>Adoptium</jdk.vendor>
     <javafx.version>17.0.2</javafx.version>
     <junit.version>5.8.2</junit.version>
@@ -119,6 +119,58 @@
         </executions>
       </plugin>
 
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+
+          <execution>
+            <id>create-jre</id>
+            <phase>package</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>jlink</executable>
+              <workingDirectory>${project.build.directory}</workingDirectory>
+              <arguments>
+                <argument>--add-modules</argument>
+                <argument>ALL-MODULE-PATH</argument>
+                <argument>--compress</argument>
+                <argument>2</argument>
+                <argument>--no-header-files</argument>
+                <argument>--no-man-pages</argument>
+                <argument>--output</argument>
+                <argument>jre/</argument>
+              </arguments>
+            </configuration>
+          </execution>
+
+        </executions>
+
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.4.2</version>
+        <executions>
+          <execution>
+            <id>dist</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/assembly/src.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+        
     </plugins>
 
   </build>
