@@ -24,7 +24,7 @@ jobs:
           (Get-Content ~/.m2/toolchains.xml) -replace"<jdkHome>.*</jdkHome>", ("<jdkHome>"+[Environment]::GetEnvironmentVariable('JAVA_HOME')+"</jdkHome>") | Set-Content ~/.m2/toolchains.xml
 
       - name: Build with Maven
-        run: mvn --batch-mode package 
+        run: cd adoptium-font-crash/ && mvn --batch-mode package 
 
       - name: Archive 
         uses: actions/upload-artifact@v3
