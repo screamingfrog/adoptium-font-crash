@@ -30,6 +30,6 @@ jobs:
       - name: Archive 
         uses: actions/upload-artifact@v3
         with:
-          name: kit
+          name: oracle
           path: adoptium-font-crash/target/adoptium-font-crash-1.0-SNAPSHOT-distribution.zip
           retention-days: 2
