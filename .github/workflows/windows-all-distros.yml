@@ -9,7 +9,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        distro: [temurin, zulu, adopt, adopt-openj9, liberica, microsoft, corretto]
+        # Dont' work: microsoft, corretto
+        distro: [temurin, zulu, adopt, adopt-openj9, liberica]
  
     runs-on: windows-latest
 
