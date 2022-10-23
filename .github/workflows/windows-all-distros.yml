@@ -1,6 +1,5 @@
 name: Windows All Distros
 
-
 on:
   workflow_dispatch:
   push:
