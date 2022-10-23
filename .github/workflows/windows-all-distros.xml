@@ -1,15 +1,14 @@
 name: Windows All Distros
 
-
 on:
   workflow_dispatch:
   push:
 
 jobs:
   build:
-   strategy:
-     matrix:
-      distro: [temurin, zulu, adopt, adopt-openj9, liberica, microsoft, corretto]
+    strategy:
+      matrix:
+        distro: [temurin, zulu, adopt, adopt-openj9, liberica, microsoft, corretto]
 
     runs-on: windows-latest
 
