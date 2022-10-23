@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
        # distro: [temurin, zulu, adopt, adopt-openj9, liberica, microsoft, corretto]
-       distro: [temurin, adopt-openj9]
+       distro: [temurin, liberica]
 
     runs-on: windows-latest
 
