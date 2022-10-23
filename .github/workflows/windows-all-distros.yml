@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     strategy:
-     fail-fast: true
+      fail-fast: false
       matrix:
         distro: [temurin, zulu, adopt, adopt-openj9, liberica, microsoft, corretto]
  
