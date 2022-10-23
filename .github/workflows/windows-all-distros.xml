@@ -5,7 +5,6 @@ on:
   push:
 
 jobs:
-  build:
     strategy:
       matrix:
         distro: [temurin, zulu, adopt, adopt-openj9, liberica, microsoft, corretto]
