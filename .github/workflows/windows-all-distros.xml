@@ -5,31 +5,30 @@ on:
   push:
 
 jobs:
-    strategy:
-      matrix:
-        distro: [temurin, zulu, adopt, adopt-openj9, liberica, microsoft, corretto]
-    runs-on: windows-latest
-    steps:
+  strategy:
+    matrix:
+      distro: [temurin, zulu, adopt, adopt-openj9, liberica, microsoft, corretto]
+  runs-on: windows-latest
+  steps:
 
-      - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17.0.4'
+        distribution: ${{ matrix.distro }}
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17.0.4'
-          distribution: ${{ matrix.distro }}
+    - name: Maven Settings
+      run: |
+        cp adoptium-font-crash/src/setup/windows/toolchain.xml $HOME/.m2/toolchains.xml
+        (Get-Content ~/.m2/toolchains.xml) -replace"<jdkHome>.*</jdkHome>", ("<jdkHome>"+[Environment]::GetEnvironmentVariable('JAVA_HOME')+"</jdkHome>") | Set-Content ~/.m2/toolchains.xml
 
-      - name: Maven Settings
-        run: |
-          cp adoptium-font-crash/src/setup/windows/toolchain.xml $HOME/.m2/toolchains.xml
-          (Get-Content ~/.m2/toolchains.xml) -replace"<jdkHome>.*</jdkHome>", ("<jdkHome>"+[Environment]::GetEnvironmentVariable('JAVA_HOME')+"</jdkHome>") | Set-Content ~/.m2/toolchains.xml
+    - name: Build with Maven
+      run: cd adoptium-font-crash/ && mvn --batch-mode package 
 
-      - name: Build with Maven
-        run: cd adoptium-font-crash/ && mvn --batch-mode package 
-
-      - name: Archive 
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.distro }}
-          path: adoptium-font-crash/target/adoptium-font-crash-1.0-SNAPSHOT-distribution.zip
-          retention-days: 2
+    - name: Archive 
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.distro }}
+        path: adoptium-font-crash/target/adoptium-font-crash-1.0-SNAPSHOT-distribution.zip
+        retention-days: 2
